@@ -1,30 +1,47 @@
 package com.inditex.demo.prices.adapters.api;
 
+import com.inditex.demo.application.PriceApplicationService;
 import com.inditex.demo.prices.adapters.api.dto.PriceResponseDto;
-import com.inditex.demo.prices.domain.ports.service.PriceService;
+
 import reactor.core.publisher.Mono;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
+/**
+ * Implementación de la fachada para obtener el precio preferente.
+ */
 @Component
-public class PriceFacadeImpl implements PriceFacade {
+public final class PriceFacadeImpl implements PriceFacade {
 
-    private final PriceService priceService;
+    /** Servicio de aplicación encargado de obtener precios. */
+    private final PriceApplicationService priceService;
 
-
-    public PriceFacadeImpl(PriceService priceService) {
+    /**
+     * Constructor de la fachada.
+     *
+     * @param priceService servicio de aplicación de precios
+     */
+    public PriceFacadeImpl(final PriceApplicationService priceService) {
         this.priceService = priceService;
     }
 
-
+    /**
+     * Obtiene el precio preferente según fecha, producto y marca.
+     *
+     * @param applyDate fecha de aplicación
+     * @param productId identificador del producto
+     * @param brandId   identificador de la marca
+     * @return respuesta con el precio preferente
+     */
+    @Override
     public Mono<PriceResponseDto> getPreferredPrice(
-            LocalDateTime applyDate,
-            Integer productId,
-            Integer brandId
+            final LocalDateTime applyDate,
+            final Integer productId,
+            final Integer brandId
     ) {
-        return priceService.getPreferredPrice(applyDate, productId, brandId)
+        return priceService
+                .getPreferredPrice(applyDate, productId, brandId)
                 .map(PriceResponseDto::new);
     }
-
 }

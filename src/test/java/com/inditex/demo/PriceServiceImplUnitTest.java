@@ -1,8 +1,8 @@
 package com.inditex.demo;
 
+import com.inditex.demo.application.PriceApplicationService;
 import com.inditex.demo.prices.domain.model.Price;
 import com.inditex.demo.prices.domain.ports.repository.PriceRepository;
-import com.inditex.demo.prices.domain.ports.service.PriceServiceImpl;
 import com.inditex.demo.prices.exceptions.PriceNotFoundException;
 
 import org.junit.jupiter.api.Test;
@@ -22,7 +22,7 @@ class PriceServiceImplUnitTest {
     private PriceRepository priceRepository;
 
     @InjectMocks
-    private PriceServiceImpl priceService;
+    private PriceApplicationService priceService;
 
     public PriceServiceImplUnitTest() {
         MockitoAnnotations.openMocks(this);
@@ -32,10 +32,17 @@ class PriceServiceImplUnitTest {
     void testGetPreferredPriceFound() {
         LocalDateTime date = LocalDateTime.parse("2020-06-14T10:00:00");
 
-        Price price = new Price();
-        price.setProductId(35455);
-        price.setBrandId(1);
-        price.setPrice(35.50);
+        // Dominio puro
+        Price price = new Price(
+                1,                      // priceList
+                35455,                  // productId
+                1,                      // brandId
+                0,                      // priority
+                "EUR",                  // currency
+                35.50,                  // price
+                LocalDateTime.parse("2020-06-14T00:00:00"),
+                LocalDateTime.parse("2020-12-31T23:59:59")
+        );
 
         when(priceRepository.getPreferredPrice(date, 35455, 1))
                 .thenReturn(Mono.just(price));
