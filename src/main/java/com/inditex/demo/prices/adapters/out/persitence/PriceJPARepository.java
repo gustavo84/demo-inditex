@@ -1,4 +1,4 @@
-package com.inditex.demo.prices.adapters.pricedb;
+package com.inditex.demo.prices.adapters.out.persitence;
 
 import reactor.core.publisher.Mono;
 

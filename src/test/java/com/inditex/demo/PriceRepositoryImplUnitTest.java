@@ -3,7 +3,7 @@ package com.inditex.demo;
 import com.inditex.demo.infraestructure.adapter.out.persistence.PriceJpaAdapter;
 import com.inditex.demo.infraestructure.db.PriceEntity;
 import com.inditex.demo.infraestructure.db.mapper.PriceMapper;
-import com.inditex.demo.prices.adapters.pricedb.PriceJPARepository;
+import com.inditex.demo.prices.adapters.out.persitence.PriceJPARepository;
 import com.inditex.demo.prices.domain.model.Price;
 import com.inditex.demo.prices.exceptions.PriceNotFoundException;
 
