@@ -1,7 +1,7 @@
 package com.inditex.demo.application;
 
 import com.inditex.demo.prices.domain.model.Price;
-import com.inditex.demo.prices.domain.ports.repository.PriceRepository;
+import com.inditex.demo.prices.domain.ports.repository.PricePersitencePort;
 import com.inditex.demo.prices.exceptions.PriceNotFoundException;
 import reactor.core.publisher.Mono;
 
@@ -13,17 +13,17 @@ import org.springframework.stereotype.Service;
  * Servicio de aplicación para obtener el precio preferente.
  */
 @Service
-public final class PriceApplicationService implements PriceService {
+public final class PriceApplicationService implements GetApplicablePriceUseCase {
 
     /** Repositorio de precios. */
-    private final PriceRepository priceRepository;
+    private final PricePersitencePort priceRepository;
 
     /**
      * Constructor del servicio.
      *
      * @param priceRepository repositorio de precios
      */
-    public PriceApplicationService(final PriceRepository priceRepository) {
+    public PriceApplicationService(final PricePersitencePort priceRepository) {
         this.priceRepository = priceRepository;
     }
 
