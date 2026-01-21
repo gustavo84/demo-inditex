@@ -2,7 +2,7 @@ package com.inditex.demo;
 
 import com.inditex.demo.application.PriceApplicationService;
 import com.inditex.demo.prices.domain.model.Price;
-import com.inditex.demo.prices.domain.ports.repository.PriceRepository;
+import com.inditex.demo.prices.domain.ports.repository.PricePersitencePort;
 import com.inditex.demo.prices.exceptions.PriceNotFoundException;
 
 import org.junit.jupiter.api.Test;
@@ -19,7 +19,7 @@ import static org.mockito.Mockito.*;
 class PriceServiceImplUnitTest {
 
     @Mock
-    private PriceRepository priceRepository;
+    private PricePersitencePort priceRepository;
 
     @InjectMocks
     private PriceApplicationService priceService;
