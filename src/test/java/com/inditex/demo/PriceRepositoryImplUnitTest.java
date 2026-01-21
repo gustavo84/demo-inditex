@@ -1,5 +1,7 @@
 package com.inditex.demo;
 
+import com.inditex.demo.infraestructure.db.PriceEntity;
+import com.inditex.demo.infraestructure.db.mapper.PriceMapper;
 import com.inditex.demo.prices.adapters.pricedb.PriceJPARepository;
 import com.inditex.demo.prices.adapters.pricedb.PriceRepositoryImpl;
 import com.inditex.demo.prices.domain.model.Price;
@@ -33,7 +35,6 @@ class PriceRepositoryImplUnitTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        // Instancias REALES de Resilience4j
         CircuitBreaker circuitBreaker = CircuitBreaker.ofDefaults("testCB");
 
         RateLimiter rateLimiter = RateLimiter.of("testRL",
@@ -48,12 +49,15 @@ class PriceRepositoryImplUnitTest {
 
         Bulkhead bulkhead = Bulkhead.ofDefaults("testBH");
 
+        PriceMapper mapper = new PriceMapper();
+
         priceRepository = new PriceRepositoryImpl(
                 priceJPARepository,
                 circuitBreaker,
                 rateLimiter,
                 retry,
-                bulkhead
+                bulkhead,
+                mapper
         );
     }
 
@@ -61,20 +65,25 @@ class PriceRepositoryImplUnitTest {
     void testGetPreferredPriceFound() {
         LocalDateTime date = LocalDateTime.parse("2020-06-14T10:00:00");
 
-        Price price = new Price();
-        price.setProductId(35455);
-        price.setBrandId(1);
-        price.setPrice(35.50);
+        PriceEntity entity = new PriceEntity();
+        entity.setProductId(35455);
+        entity.setBrandId(1);
+        entity.setPriceList(1);
+        entity.setStartDate(LocalDateTime.parse("2020-06-14T00:00:00"));
+        entity.setEndDate(LocalDateTime.parse("2020-12-31T23:59:59"));
+        entity.setPrice(35.50);
 
         when(priceJPARepository
                 .findTopByProductIdAndBrandIdAndStartDateBeforeAndEndDateAfterOrderByPriorityDesc(
                         35455, 1, date, date))
-                .thenReturn(Mono.just(price));
+                .thenReturn(Mono.just(entity));
 
         Price result = priceRepository.getPreferredPrice(date, 35455, 1).block();
 
         assertNotNull(result);
         assertEquals(35.50, result.getPrice());
+        assertEquals(35455, result.getProductId());
+        assertEquals(1, result.getBrandId());
     }
 
     @Test

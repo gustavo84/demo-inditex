@@ -1,40 +1,38 @@
 package com.inditex.demo.prices.domain.model;
 
 import lombok.Getter;
-import lombok.Setter;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Table;
+import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
 
+/**
+ * Modelo de dominio que representa un precio aplicable a un producto.
+ */
 @Getter
-@Setter
-@Table("PRICES")
-public class Price {
+@RequiredArgsConstructor
+public final class Price {
 
-    @Id
-    @Column("PRICE_LIST")
-    private Integer priceList;
+    /** Identificador de la tarifa. */
+    private final Integer priceList;
 
-    @Column("PRODUCT_ID")
-    private Integer productId;
+    /** Identificador del producto. */
+    private final Integer productId;
 
-    @Column("BRAND_ID")
-    private Integer brandId;
+    /** Identificador de la marca. */
+    private final Integer brandId;
 
-    @Column("PRIORITY")
-    private Integer priority;
+    /** Prioridad del precio. */
+    private final Integer priority;
 
-    @Column("CURR")
-    private String currency;   // ⚠️ ver punto 3
+    /** Moneda del precio. */
+    private final String currency;
 
-    @Column("PRICE")
-    private Double price;
+    /** Valor del precio. */
+    private final Double price;
 
-    @Column("START_DATE")
-    private LocalDateTime startDate;
+    /** Fecha de inicio de validez. */
+    private final LocalDateTime startDate;
 
-    @Column("END_DATE")
-    private LocalDateTime endDate;
+    /** Fecha de fin de validez. */
+    private final LocalDateTime endDate;
 }
