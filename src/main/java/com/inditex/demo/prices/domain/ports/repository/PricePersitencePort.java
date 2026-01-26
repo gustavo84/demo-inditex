@@ -3,6 +3,7 @@ package com.inditex.demo.prices.domain.ports.repository;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import com.inditex.demo.prices.domain.model.Price;
 
@@ -19,9 +20,9 @@ public interface PricePersitencePort {
      * @param brandId   identificador de la marca
      * @return precio preferente envuelto en un {@link Mono}
      */
-    Mono<Price> getPreferredPrice(
-            final LocalDateTime applyDate,
-            final Integer productId,
-            final Integer brandId
-    );
+	Price getPreferredPrice(
+		    LocalDateTime applyDate,
+		    Integer productId,
+		    Integer brandId
+		);
 }

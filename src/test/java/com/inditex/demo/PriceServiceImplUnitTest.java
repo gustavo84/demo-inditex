@@ -9,7 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import reactor.core.publisher.Mono;
+
+
 
 import java.time.LocalDateTime;
 
@@ -45,7 +46,7 @@ class PriceServiceImplUnitTest {
         );
 
         when(priceRepository.getPreferredPrice(date, 35455, 1))
-                .thenReturn(Mono.just(price));
+                .thenReturn(price);
 
         Price result = priceService.getPreferredPrice(date, 35455, 1).block();
 
@@ -57,18 +58,24 @@ class PriceServiceImplUnitTest {
     }
 
     @Test
-    void testGetPreferredPriceNotFound() {
-        LocalDateTime date = LocalDateTime.parse("2020-06-14T10:00:00");
+    void testGetPreferredPriceNotFoundFor2019() {
+        LocalDateTime date = LocalDateTime.parse("2019-06-14T10:00:00");
 
+        // Configuramos el mock para que lance la excepción al pedir esa fecha
         when(priceRepository.getPreferredPrice(date, 35455, 1))
-                .thenReturn(Mono.empty());
+                .thenThrow(new PriceNotFoundException(35455, 1, date));
 
+        // Comprobamos que el service lanza la excepción
         assertThrows(
                 PriceNotFoundException.class,
                 () -> priceService.getPreferredPrice(date, 35455, 1).block()
         );
 
+
+        // Verificamos que se llamó exactamente una vez al repositorio
         verify(priceRepository, times(1))
                 .getPreferredPrice(date, 35455, 1);
     }
+
+
 }

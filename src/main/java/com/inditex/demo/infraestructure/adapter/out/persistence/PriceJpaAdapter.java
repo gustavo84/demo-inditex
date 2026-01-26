@@ -81,7 +81,7 @@ public final class PriceJpaAdapter implements PricePersitencePort {
      * @return precio preferente o error si no existe
      */
     @Override
-    public Mono<Price> getPreferredPrice(
+    public Price getPreferredPrice(
             final LocalDateTime applyDate,
             final Integer productId,
             final Integer brandId
@@ -98,9 +98,9 @@ public final class PriceJpaAdapter implements PricePersitencePort {
                 .transform(CircuitBreakerOperator.of(circuitBreaker))
                 .transform(RateLimiterOperator.of(rateLimiter))
                 .timeout(java.time.Duration.ofSeconds(2))
-                .switchIfEmpty(
-                        Mono.error(new PriceNotFoundException(productId, brandId, applyDate))
-                )
-                .map(mapper::toDomain);
+                .map(mapper::toDomain)
+                .blockOptional()
+                .orElseThrow(() -> new PriceNotFoundException(productId, brandId, applyDate));
+                
     }
 }

@@ -78,7 +78,7 @@ class PriceRepositoryImplUnitTest {
                         35455, 1, date, date))
                 .thenReturn(Mono.just(entity));
 
-        Price result = priceRepository.getPreferredPrice(date, 35455, 1).block();
+        Price result = priceRepository.getPreferredPrice(date, 35455, 1);
 
         assertNotNull(result);
         assertEquals(35.50, result.getPrice());
@@ -97,7 +97,7 @@ class PriceRepositoryImplUnitTest {
 
         assertThrows(
                 PriceNotFoundException.class,
-                () -> priceRepository.getPreferredPrice(date, 35455, 1).block()
+                () -> priceRepository.getPreferredPrice(date, 35455, 1)
         );
     }
 }
