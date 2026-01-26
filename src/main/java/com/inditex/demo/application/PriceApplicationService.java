@@ -4,6 +4,7 @@ import com.inditex.demo.prices.domain.model.Price;
 import com.inditex.demo.prices.domain.ports.repository.PricePersitencePort;
 import com.inditex.demo.prices.exceptions.PriceNotFoundException;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.time.LocalDateTime;
 
@@ -43,6 +44,6 @@ public final class PriceApplicationService implements GetApplicablePriceUseCase 
 
         return Mono.fromCallable(() -> 
         pricePersistencePort.getPreferredPrice(applyDate, productId, brandId)
-    );
+    ).subscribeOn(Schedulers.boundedElastic());
     }
 }
