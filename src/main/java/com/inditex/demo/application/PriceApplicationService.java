@@ -16,15 +16,15 @@ import org.springframework.stereotype.Service;
 public final class PriceApplicationService implements GetApplicablePriceUseCase {
 
     /** Repositorio de precios. */
-    private final PricePersitencePort priceRepository;
+    private final PricePersitencePort pricePersistencePort;
 
     /**
      * Constructor del servicio.
      *
-     * @param priceRepository repositorio de precios
+     * @param pricePersistencePort repositorio de precios
      */
-    public PriceApplicationService(final PricePersitencePort priceRepository) {
-        this.priceRepository = priceRepository;
+    public PriceApplicationService(final PricePersitencePort pricePersistencePort) {
+        this.pricePersistencePort = pricePersistencePort;
     }
 
     /**
@@ -41,10 +41,8 @@ public final class PriceApplicationService implements GetApplicablePriceUseCase 
             final Integer productId,
             final Integer brandId) {
 
-        return priceRepository
-                .getPreferredPrice(applyDate, productId, brandId)
-                .switchIfEmpty(
-                        Mono.error(new PriceNotFoundException(productId, brandId, applyDate))
-                );
+        return Mono.fromCallable(() -> 
+        pricePersistencePort.getPreferredPrice(applyDate, productId, brandId)
+    );
     }
 }

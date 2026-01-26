@@ -7,7 +7,9 @@ explicaciones sobre la arquitectura, principios utilizados y mecanismos de resil
 
 El microservicio sigue un modelo de capas:
 
-- **Controller → Facade → Service → Repository (Port) → JPA Repository (Adapter)**
+Controller (HTTP) → PriceApplicationService (UseCase) → PricePersitencePort (interface)
+→ PriceRepositoryImpl (Adapter / R2DBC + Resilience4j) → DB
+
 
 **Beneficios:**
 
