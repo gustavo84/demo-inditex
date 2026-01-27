@@ -3,6 +3,8 @@
 Esta es una pequeña demo como prueba técnica para Inditex. Aquí se detallan los requisitos para ejecutar el código y
 explicaciones sobre la arquitectura, principios utilizados y mecanismos de resiliencia implementados.
 
+[![DeepWiki Demo](https://img.shields.io/badge/DeepWiki-Demo-blue)](https://deepwiki.com/gustavo84/demo-inditex)
+
 ## Arquitectura de Capas
 
 El microservicio sigue un modelo de capas:
