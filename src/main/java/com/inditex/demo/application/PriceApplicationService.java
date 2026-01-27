@@ -2,9 +2,7 @@ package com.inditex.demo.application;
 
 import com.inditex.demo.prices.domain.model.Price;
 import com.inditex.demo.prices.domain.ports.repository.PricePersitencePort;
-import com.inditex.demo.prices.exceptions.PriceNotFoundException;
-import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
+
 
 import java.time.LocalDateTime;
 
@@ -34,16 +32,16 @@ public final class PriceApplicationService implements GetApplicablePriceUseCase 
      * @param applyDate fecha de aplicación
      * @param productId id del producto
      * @param brandId id de la marca
-     * @return Mono con el precio preferente o error si no existe
+     * @return Price
      */
     @Override
-    public Mono<Price> getPreferredPrice(
+    public Price getPreferredPrice(
             final LocalDateTime applyDate,
             final Integer productId,
             final Integer brandId) {
 
-        return Mono.fromCallable(() -> 
-        pricePersistencePort.getPreferredPrice(applyDate, productId, brandId)
-    ).subscribeOn(Schedulers.boundedElastic());
+        return 
+        pricePersistencePort.getPreferredPrice(applyDate, productId, brandId);
+
     }
 }

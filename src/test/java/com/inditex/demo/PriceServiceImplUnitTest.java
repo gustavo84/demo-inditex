@@ -48,7 +48,7 @@ class PriceServiceImplUnitTest {
         when(priceRepository.getPreferredPrice(date, 35455, 1))
                 .thenReturn(price);
 
-        Price result = priceService.getPreferredPrice(date, 35455, 1).block();
+        Price result = priceService.getPreferredPrice(date, 35455, 1);
 
         assertNotNull(result);
         assertEquals(35.50, result.getPrice());
@@ -68,7 +68,7 @@ class PriceServiceImplUnitTest {
         // Comprobamos que el service lanza la excepción
         assertThrows(
                 PriceNotFoundException.class,
-                () -> priceService.getPreferredPrice(date, 35455, 1).block()
+                () -> priceService.getPreferredPrice(date, 35455, 1)
         );
 
 
