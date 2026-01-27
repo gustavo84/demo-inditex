@@ -19,7 +19,7 @@ public interface PriceFacade {
      * @param brandId   identificador de la marca
      * @return respuesta con el precio preferente
      */
-    Mono<PriceResponseDto> getPreferredPrice(
+	Mono<PriceResponseDto> getPreferredPrice(
             final LocalDateTime applyDate,
             final Integer productId,
             final Integer brandId

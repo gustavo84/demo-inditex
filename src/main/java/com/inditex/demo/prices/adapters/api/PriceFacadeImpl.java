@@ -4,6 +4,8 @@ import com.inditex.demo.application.PriceApplicationService;
 import com.inditex.demo.prices.adapters.api.dto.PriceResponseDto;
 
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
+
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -32,7 +34,7 @@ public final class PriceFacadeImpl implements PriceFacade {
      * @param applyDate fecha de aplicación
      * @param productId identificador del producto
      * @param brandId   identificador de la marca
-     * @return respuesta con el precio preferente
+     * @return Mono<PriceResponseDto> respuesta con el precio preferente
      */
     @Override
     public Mono<PriceResponseDto> getPreferredPrice(
@@ -40,8 +42,8 @@ public final class PriceFacadeImpl implements PriceFacade {
             final Integer productId,
             final Integer brandId
     ) {
-        return priceService
-                .getPreferredPrice(applyDate, productId, brandId)
-                .map(PriceResponseDto::new);
+    	return Mono.fromCallable(() -> priceService.getPreferredPrice(applyDate, productId, brandId))
+    			.subscribeOn(Schedulers.boundedElastic()) // decide threading
+    			.map(PriceResponseDto::new);
     }
 }

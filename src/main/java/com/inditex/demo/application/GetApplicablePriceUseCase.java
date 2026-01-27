@@ -19,7 +19,7 @@ public interface GetApplicablePriceUseCase  {
      * @param brandId   identificador de la marca
      * @return Mono con el precio preferente
      */
-    Mono<Price> getPreferredPrice(
+    Price getPreferredPrice(
             LocalDateTime applyDate,
             Integer productId,
             Integer brandId

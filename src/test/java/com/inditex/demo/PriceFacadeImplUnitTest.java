@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
 
@@ -46,7 +45,7 @@ class PriceFacadeImplUnitTest {
         );
 
         when(priceService.getPreferredPrice(date, 35455, 1))
-                .thenReturn(Mono.just(price));
+                .thenReturn(price);
 
         PriceResponseDto dto = priceFacade.getPreferredPrice(date, 35455, 1).block();
 
